@@ -6,6 +6,7 @@ use Inertia\Inertia;
 
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,7 @@ Route::get('/contacts/{contact}/edit', [ContactController::class, 'edit'])->name
 Route::put('/contacts/{contact}', [ContactController::class, 'update'])->name('contacts.update');
 Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
-Route::middleware([
+/*Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
@@ -46,14 +47,12 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
-});
+});*/
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::get('/search/{name}', [SearchController::class, 'search'])->name('search');
 });
