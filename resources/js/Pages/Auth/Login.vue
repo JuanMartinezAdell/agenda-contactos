@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
+import AuthenticationCardVue from '@/ComponentsNew/AuthenticationCardVue.vue';
+import AuthenticationCardLogoVue from '@/ComponentsNew/AuthenticationCardLogoVue.vue';
 import Checkbox from '@/Components/Checkbox.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -32,9 +32,9 @@ const submit = () => {
 <template>
     <Head title="Log in" />
 
-    <AuthenticationCard>
+    <AuthenticationCardVue>
         <template #logo>
-            <AuthenticationCardLogo />
+            <AuthenticationCardLogoVue />
         </template>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -85,5 +85,19 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-    </AuthenticationCard>
+
+        <template #register>
+            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="flex justify-center">
+                <span class="mr-4 text-gray-600">No tienes cuenta?</span>
+                <Link :href="route('register')" class="underline text-gray-600 hover:text-gray-900">
+                        Registrate
+                </Link>
+            </div>
+        </div>
+        </template>
+
+
+    </AuthenticationCardVue>
+
 </template>
