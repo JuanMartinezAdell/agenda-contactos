@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Contact;
-use Illuminate\Http\Request;
-
 
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -21,14 +20,21 @@ class ContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $contacts = Contact::with(['organization', 'position', 'service', 'location'])->get();
+        $filters = $request->all('search');
+
+        //return $filters;
+
+        $contacts = Contact::with(['organization', 'position', 'service', 'location'])
+            ->filter($filters)
+            ->latest('id')
+            ->paginate();
 
         // return $contacts;
 
-        return Inertia::render('Contacts/IndexContacts', compact('contacts'));
+        return Inertia::render('Contacts/IndexContacts', compact('contacts', 'filters'));
     }
 
     /**

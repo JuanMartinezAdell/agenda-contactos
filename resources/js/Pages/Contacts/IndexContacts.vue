@@ -1,18 +1,34 @@
 <script>
     import AppLayout from '@/Layouts/AppLayout.vue';
     import DropdownVue from '../../ComponentsNew/DropdownVue.vue';
+    import Pagination from '../../ComponentsNew/PaginationVue.vue';
+    import Input from '@/ComponentsNew/TextInput.vue';
 
     export default {
         components: {
             AppLayout,
-            DropdownVue
+            DropdownVue,
+            Pagination,
+            Input
+        },
+
+        data() {
+            return {
+                search: this.filters.search,
+            }
+        },
+
+        watch: {
+            search($value) {
+                this.$inertia.get('/contacts', { search: $value } , { preserveState: true })
+            }
         },
 
         props: {
-            contacts: {
-                type: Array,
-                required: true,
-            }
+            filters: Object,
+            contacts: Object,
+
+
         }
     }
 </script>
@@ -27,15 +43,16 @@
                     <div>
                         <DropdownVue  align="right" width="100" overflow="overflow-y-auto" maxheight="300">
                             <template #trigger>
-                                <div class="relative">
+                                <div class="relative relative grow">
                                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                                         <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
                                     </div>
-                                    <input v-model="search" type="search" class="block p-2 pl-10 w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Busca contactos">
+                                    <Input v-model="search" type="search" class="block p-2 pl-10 w-80 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Busca contactos" />
+                                    <!-- {{ search }} -->
                                 </div>
                             </template>
 
-                            <template #content>
+                            <!--template #content>
                                 <a href="" class="block flex items-center py-2 px-3 hover:bg-gray-100">
                                     <img src="" alt="Juan">
                                     <div class="ml-2">
@@ -43,7 +60,7 @@
                                         <span class="text-sm font-light text-gray-400 ">Informatica</span>
                                     </div>
                                 </a>
-                            </template>
+                            </template -->
                         </DropdownVue>
                     </div>
                 </div>
@@ -96,7 +113,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="contact in contacts" :key="contact.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <tr v-for="contact in contacts.data" :key="contact.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <th scope="row" class="flex items-center py-4 px-6 text-gray-900 whitespace-nowrap dark:text-white">
                                     <div class="flex items-center">
                                         <div class="flex-shrink-0 w-10 h-10">
@@ -135,6 +152,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <pagination :pagination="contacts"></pagination>
                 </div>
             </div>
 
