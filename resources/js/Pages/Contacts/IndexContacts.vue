@@ -7,7 +7,6 @@
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
     import EditButton from '@/ComponentsNew/EditButton.vue';
-
     export default {
         components: {
             AppLayout,
@@ -19,24 +18,19 @@
             SecundaryButton,
             EditButton
         },
-
         data() {
             return {
                 search: this.filters.search,
             }
         },
-
         watch: {
             search($value) {
                 this.$inertia.get('/contacts', { search: $value } , { preserveState: true })
             }
         },
-
         props: {
             filters: Object,
             contacts: Object,
-
-
         }
     }
 </script>
@@ -175,5 +169,4 @@
 </template>
 
 <style>
-
 </style>

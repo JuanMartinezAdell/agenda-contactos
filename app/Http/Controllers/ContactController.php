@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use App\Models\Organization;
 
 class ContactController extends Controller
 {
@@ -80,7 +81,7 @@ class ContactController extends Controller
             ])
         );
 
-        return Redirect::route('contacts.create');
+        return Redirect::route('contacts.index')->with('message', "Contacto creado correctamente");
     }
 
     /**

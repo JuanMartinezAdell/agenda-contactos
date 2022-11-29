@@ -24,7 +24,7 @@
         },
 
         props: {
-                organizations: Array,
+                organizations: Object,
                 positions: Array,
                 services: Array,
                 locations: Array,
@@ -85,7 +85,7 @@
                                 />
                                 <InputError class="mt-2" />
                             </div>
-                            <div class="mt-4">
+                            <div class="mt-4 mx-8">
                                 <InputLabel for="email" value="Email" />
                                 <TextInput
                                     id="email"
@@ -102,66 +102,26 @@
                                     <template #trigger>
                                         <Label>
                                             Empresa
-                                            <select id="organization" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
+                                            <select v-model="form.organization_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <option value="" disabled selected>Selecciona una Empresa</option>
+                                                <option v-for="organization in organizations" :value="organization.id" :key="organization.id">{{ organization.name }}</option>
+                                                <InputError class="mt-2" />
                                             </select>
                                         </Label>
-                                    </template>
-                                    <template #content>
-                                        <div class="w-60">
-
-
-                                        </div>
                                     </template>
                                 </Dropdown>
                             </div>
                             <div class="mt-4 mx-8">
-                                <Dropdown align="right" width="60">
+                                <Dropdown width="60">
                                     <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <Label>
-                                                Empresa
-                                                <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:bg-gray-50 hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition">
-                                                    Nombre
-
-                                                    <svg
-                                                        class="ml-2 -mr-0.5 h-4 w-4"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                        fill="currentColor"
-                                                    >
-                                                        <path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                                    </svg>
-                                                </button>
-                                            </Label>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <div class="w-60">
-                                            <!-- Team Management -->
-                                            <template>
-                                                <div class="block px-4 py-2 text-xs text-gray-400">
-                                                    Manage Team
-                                                </div>
-
-                                                <!-- Team Settings -->
-                                                <DropdownLink>
-                                                    Team Settings
-                                                </DropdownLink>
-
-                                                <DropdownLink>
-                                                    Create New Team
-                                                </DropdownLink>
-
-                                                <div class="border-t border-gray-100" />
-
-                                                <!-- Team Switcher -->
-                                                <div class="block px-4 py-2 text-xs text-gray-400">
-                                                    Switch Teams
-                                                </div>
-                                            </template>
-                                        </div>
+                                        <Label>
+                                            Puesto
+                                            <select v-model="form.position_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <option value="" disabled selected>Selecciona el pusto de trabajo</option>
+                                                <option v-for="position in positions" :value="position.id" :key="position.id">{{ position.name }}</option>
+                                                <InputError class="mt-2" />
+                                            </select>
+                                        </Label>
                                     </template>
                                 </Dropdown>
                             </div>
@@ -170,19 +130,12 @@
                                     <template #trigger>
                                         <Label>
                                             Servicio
-                                            <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option selected>Todos los servicios</option>
-                                                <option value="HOSP">Hospital</option>
-                                                <option value="PRIM">Primaria</option>
-                                                <option value="EX">Externos</option>
+                                            <select v-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <option value="" disabled selected>Selecciona el servico</option>
+                                                <option v-for="service in services" :value="service.id" :key="service.id">{{ service.name }}</option>
+                                                <InputError class="mt-2" />
                                             </select>
                                         </Label>
-                                    </template>
-                                    <template #content>
-                                        <div class="w-60">
-
-
-                                        </div>
                                     </template>
                                 </Dropdown>
                             </div>
@@ -190,20 +143,13 @@
                                 <Dropdown width="60">
                                     <template #trigger>
                                         <Label>
-                                            Ubicación
-                                            <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                                <option selected>Todas las ubicaciones</option>
-                                                <option value="HOSP">Hospital</option>
-                                                <option value="PRIM">Primaria</option>
-                                                <option value="EXt">Externos</option>
+                                            Localizacion
+                                            <select v-model="form.location_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                                <option value="" disabled selected>Selecciona una Localizacion</option>
+                                                <option v-for="location in locations" :value="location.id" :key="location.id">{{ location.name }}</option>
+                                                <InputError class="mt-2" />
                                             </select>
                                         </Label>
-                                    </template>
-                                    <template #content>
-                                        <div class="w-60">
-
-
-                                        </div>
                                     </template>
                                 </Dropdown>
                             </div>
