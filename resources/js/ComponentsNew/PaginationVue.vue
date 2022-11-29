@@ -21,12 +21,12 @@
 
                 <template v-for="(link, key) in pagination.links">
 
-                    <div v-if="link.url == null" :key="key" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium" v-html="link.label"></div>
+                    <div v-if="link.url == null" :key="key" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium rounded" v-html="link.label"></div>
 
                     <Link v-else :key="'link-' + key"
                         :href="link.url"
                         class="relative inline-flex items-center px-4 py-2 border text-sm font-medium"
-                        :class="link.active ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'"
+                        :class="link.active ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600 rounded' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 rounded'"
                         v-html="link.label"></Link>
                 </template>
 

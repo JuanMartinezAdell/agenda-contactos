@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Contact;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
-use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -45,6 +46,14 @@ class ContactController extends Controller
     public function create()
     {
         //
+        $contacts = Contact::all();
+
+        $organizations = \App\Models\Organization::all();
+        $positions = \App\Models\Position::all();
+        $services = \App\Models\Service::all();
+        $locations = \App\Models\Location::all();
+
+        return Inertia::render('Contacts/CreateContacts', compact('organizations', 'positions', 'services', 'locations'));
     }
 
     /**
@@ -53,9 +62,25 @@ class ContactController extends Controller
      * @param  \App\Http\Requests\StoreContactRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreContactRequest $request)
+    public function store()
     {
         //
+        Contact::create(
+            Request::validate([
+                'name' => ['required', 'max:50'],
+                'organization_id' => ['max:50'],
+                'position_id' => ['max:50'],
+                'service_id' => ['max:50'],
+                'location_id' => ['max:50'],
+                'phone' => ['min:9', 'max:50'],
+                'short_phone' => ['min:6', 'max:6'],
+                'phone_code' => ['min:4', 'max:4'],
+                'email' => ['max:50', 'email'],
+                'description' => ['max:100'],
+            ])
+        );
+
+        return Redirect::route('contacts.create');
     }
 
     /**
@@ -78,6 +103,7 @@ class ContactController extends Controller
     public function edit(Contact $contact)
     {
         //
+        return Inertia::render('Contacts/EditContacts', compact('contact'));
     }
 
     /**

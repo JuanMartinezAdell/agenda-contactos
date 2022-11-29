@@ -3,13 +3,21 @@
     import DropdownVue from '../../ComponentsNew/DropdownVue.vue';
     import Pagination from '../../ComponentsNew/PaginationVue.vue';
     import Input from '@/ComponentsNew/TextInput.vue';
+    import {Link} from '@inertiajs/inertia-vue3';
+    import PrimaryButton from '@/Components/PrimaryButton.vue';
+    import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
+    import EditButton from '@/ComponentsNew/EditButton.vue';
 
     export default {
         components: {
             AppLayout,
             DropdownVue,
             Pagination,
-            Input
+            Input,
+            Link,
+            PrimaryButton,
+            SecundaryButton,
+            EditButton
         },
 
         data() {
@@ -81,8 +89,10 @@
                             <option value="EX">Externos</option>
                         </select>
                     </div>
-                    <div class="py-4 px-6 pb-8">
-                        <button type="button" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 ">Nuevo Contacto</button>
+                    <div class="flex justify-end">
+                        <Link :href="route('contacts.create')">
+                            <SecundaryButton class="ml-4 mt-4">Nuevo Contacto</SecundaryButton>
+                        </Link>
                     </div>
                 </div>
                 <div class="overflow-x-auto relative">
@@ -144,9 +154,9 @@
                                     {{ contact.description }}
                                 </td>
                                 <td class="py-4 px-6 pb-8">
-                                    <button type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-                                        <a href="#" class="font-bold text-lg hover:underline">></a>
-                                    </button>
+                                    <Link href="#">
+                                        <EditButton class="ml-4 mt-4 text-center">></EditButton>
+                                    </Link>
                                     <!-- a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Editar</!-->
                                 </td>
                             </tr>
