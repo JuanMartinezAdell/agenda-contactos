@@ -47,8 +47,7 @@ class ContactController extends Controller
     public function create()
     {
         //
-        $contacts = Contact::all();
-
+        $contacts = \App\Models\Contact::all();
         $organizations = \App\Models\Organization::all();
         $positions = \App\Models\Position::all();
         $services = \App\Models\Service::all();
@@ -63,25 +62,25 @@ class ContactController extends Controller
      * @param  \App\Http\Requests\StoreContactRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
         //
-        Contact::create(
-            Request::validate([
-                'name' => ['required', 'max:50'],
-                'organization_id' => ['max:50'],
-                'position_id' => ['max:50'],
-                'service_id' => ['max:50'],
-                'location_id' => ['max:50'],
-                'phone' => ['min:9', 'max:50'],
-                'short_phone' => ['min:6', 'max:6'],
-                'phone_code' => ['min:4', 'max:4'],
-                'email' => ['max:50', 'email'],
-                'description' => ['max:100'],
-            ])
-        );
+        $data = $request->validate([
+            'name' => ['required', 'max:50'],
+            'organization_id' => ['required', 'max:50'],
+            'position_id' => ['required', 'max:50'],
+            'service_id' => ['required', 'max:50'],
+            'location_id' => ['required', 'max:50'],
+            'phone' => ['required', 'max:50'],
+            'short_phone' => ['required', 'max:50'],
+            'phone_code' => ['required', 'max:50'],
+            'email' => ['required', 'max:50', 'email'],
+            'description' => 'required',
+        ]);
 
-        return Redirect::route('contacts.index')->with('message', "Contacto creado correctamente");
+        $contact = Contact::create($data);
+
+        return redirect()->route('contact.edit', $contact);
     }
 
     /**
