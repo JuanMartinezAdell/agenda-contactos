@@ -23,10 +23,10 @@ return new class extends Migration
             $table->foreignId('service_id')->constrained();
             $table->foreignId('location_id')->constrained();
 
-            $table->string('phone')->unique();;
-            $table->string('short_phone')->unique();;
+            $table->string('phone')->unique();
+            $table->string('short_phone')->unique();
             $table->string('phone_code');
-            $table->string('email')->unique();;
+            $table->string('email')->unique();
             $table->text('description');
 
             $table->timestamps();

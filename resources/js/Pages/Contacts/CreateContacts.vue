@@ -12,49 +12,36 @@
     import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
 
     export default {
-        components: {
-            AppLayout,
-            InputError,
-            InputLabel,
-            PrimaryButton,
-            SecundaryButton,
-            TextInput,
-            Dropdown,
-            DropdownLink
-        },
-
-        props: {
-                organizations: Array,
-                positions: Array,
-                services: Array,
-                locations: Array,
-            },
-
         data() {
             return {
-                contact: {
-                    name: '',
-                    organization_id: '',
-                    position_id: '',
-                    service_id: '',
-                    location_id: '',
-                    phone: '',
-                    short_phone: '',
-                    phone_code: '',
-                    email: '',
-                    description: '',
-                }
-            }
+                org: null,
+            };
         },
-
-        methods : {
-            store() {
-                this.$inertia.post(this.route('contacts.store'), this.contact);
-            }
-        }
-
     }
+</script>
 
+
+<script setup>
+    defineProps({
+        contacts: Array,
+    });
+
+    const form = useForm ({
+            name: '',
+            organization_id: '',
+            position_id: '',
+             service_id: '',
+            location_id: '',
+            phone: '',
+            short_phone: '',
+            phone_code: '',
+            email: '',
+            description: '',
+        });
+
+        function submit () {
+            form.post('/contacts', form);
+        }
 </script>
 
 <template>
@@ -71,12 +58,13 @@
                     <span class="text-indigo-700 justify-center mb-2">Crear /</span> Contacto
                 </h1>
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                    <form @submit.prevent="submit">
                         <div class="grid grid-cols-2 gap-6">
                             <div class="mt-4 mx-8">
                                 <Input for="name" value="Name" />
                                 <TextInput
                                     id="name"
-                                    v-model="contact.name"
+                                    v-model="form.name"
                                     type="text"
                                     class="mt-1 block w-full"
                                     placeholder="Nombre Apellido1 Apellido2"
@@ -84,44 +72,52 @@
                                     autofocus
                                     autocomplete="name"
                                 />
-                                <InputError class="mt-2" />
+                                <InputError class="mt-2" :message="form.errors.name" />
                             </div>
                             <div class="mt-4 mx-8">
                                 <InputLabel for="email" value="Email" />
                                 <TextInput
                                     id="email"
-                                    v-model="contact.email"
+                                    v-model="form.email"
                                     type="email"
                                     class="mt-1 block w-full"
                                     placeholder="cuenta@gmail.com"
                                     required
                                 />
-                                <InputError class="mt-2" />
+                                <InputError class="mt-2" :message="form.errors.email" />
                             </div>
                             <div class="mt-4 mx-8">
-                                <Dropdown width="60">
-                                    <template #trigger>
-                                        <Label>
-                                            Empresa
-                                            <select v-model="contact.organization_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                <!-- Dropdown width="60">
+                                    <template #trigger -->
+
+                                            <label class="form-label">Empresa</label>
+                                            <select v-model="form.organization_id" class="form.control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required>
                                                 <option value="" disabled selected>Selecciona una Empresa</option>
-                                                <option v-for="organization in organizations" :value="organization.id" :key="organization.id">{{ organization.name }}</option>
-                                                <InputError class="mt-2" />
+                                                <option v-for="(org, id) in organizations" :key="id" :value="org.id">{{ org.name }}</option>
+                                                <!--option value="1">SAS</!--option>
+                                                <option value="2">Externa</option>
+                                                <option-- value="3">SPU</option-->
                                             </select>
-                                        </Label>
-                                    </template>
-                                </Dropdown>
+                                            <InputError class="mt-2" :message="form.errors.organization_id" />
+
+                                    <!-- /template>
+                                </!-->
                             </div>
                             <div class="mt-4 mx-8">
                                 <Dropdown width="60">
                                     <template #trigger>
                                         <Label>
                                             Puesto
-                                            <select v-model="contact.position_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <select v-model="form.position_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                                 <option value="" disabled selected>Selecciona el pusto de trabajo</option>
-                                                <option v-for="position in positions" :value="position.id" :key="position.id">{{ position.name }}</option>
-                                                <InputError class="mt-2" />
+                                                <!--option v-for="position in positions" :value="position.id" :key="position.id">{{ position.name }}</!--option -->
+                                                <option value="1">Direccion</option>
+                                                <option value="2">Administracion</option>
+                                                <option value="3">Informatica</option>
+                                                <option value="4">Usuario</option>
                                             </select>
+                                            <InputError class="mt-2" :message="form.errors.position_id" />
+
                                         </Label>
                                     </template>
                                 </Dropdown>
@@ -131,11 +127,16 @@
                                     <template #trigger>
                                         <Label>
                                             Servicio
-                                            <select v-model="contact.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <select v-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                                 <option value="" disabled selected>Selecciona el servico</option>
-                                                <option v-for="service in services" :value="service.id" :key="service.id">{{ service.name }}</option>
-                                                <InputError class="mt-2" />
+                                                <!--option v-for="service in services" :value="service.id" :key="service.id">{{ service.name }}</!--option-->
+                                                <option value="1">Direccion</option>
+                                                <option value="2">Administracion</option>
+                                                <option value="3">Informatica</option>
+                                                <option value="4">Pediatria</option>
+                                                <option value="5">Medicina interna</option>
                                             </select>
+                                            <InputError class="mt-2" :message="form.errors.service_id" />
                                         </Label>
                                     </template>
                                 </Dropdown>
@@ -145,11 +146,16 @@
                                     <template #trigger>
                                         <Label>
                                             Localizacion
-                                            <select v-model="contact.location_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                            <select v-model="form.location_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
                                                 <option value="" disabled selected>Selecciona una Localizacion</option>
-                                                <option v-for="location in locations" :value="location.id" :key="location.id">{{ location.name }}</option>
-                                                <InputError class="mt-2" />
+                                                <!--option v-for="location in locations" :value="location.id" :key="location.id">{{ location.name }}</!--option-->
+                                                <option value="1">Hopital</option>
+                                                <option value="2">Cuevas de Almanzora</option>
+                                                <option value="3">Vera</option>
+                                                <option value="4">Mojacar</option>
+                                                <option value="5">Garrucha</option>
                                             </select>
+                                            <InputError class="mt-2" :message="form.errors.location_id" />
                                         </Label>
                                     </template>
                                 </Dropdown>
@@ -158,7 +164,7 @@
                                 <InputLabel for="phone" value="Telefono" />
                                 <TextInput
                                     id="phone"
-                                    v-model="contact.phone"
+                                    v-model="form.phone"
                                     type="tel"
                                     class="mt-1 block w-full"
                                     placeholder="Fijo o móvil"
@@ -166,13 +172,13 @@
                                     autofocus
                                     autocomplete="tel"
                                 />
-                                <InputError class="mt-2" />
+                                <InputError class="mt-2" :message="form.errors.phone" />
                             </div>
                             <div class="mt-4 mx-8">
                                 <InputLabel for="short_phone" value="Telefono Corto" />
                                 <TextInput
                                     id="short_phone"
-                                    v-model="contact.short_phone"
+                                    v-model="form.short_phone"
                                     type="text"
                                     class="mt-1 block w-full"
                                     required
@@ -183,13 +189,13 @@
                                     maxlength="6"
                                     pattern="[0-9]+"
                                 />
-                                <InputError class="mt-2"  />
+                                <InputError class="mt-2" :message="form.errors.short_phone" />
                             </div>
                             <div class="mt-4 mx-8">
                                 <InputLabel for="phone_code" value="Codigo telefono" />
                                 <TextInput
                                     id="phone_code"
-                                    v-model="contact.phone_code"
+                                    v-model="form.phone_code"
                                     type="text"
                                     class="mt-1 block w-full"
                                     required
@@ -200,13 +206,14 @@
                                     maxlength="4"
                                     pattern="[0-9]+"
                                 />
-                                <InputError class="mt-2" />
+
+                                <InputError class="mt-2" :message="form.errors.phone_code" />
                             </div>
                             <div class="mt-4 mx-8">
                                 <InputLabel for="description" value="Notas" />
                                 <TextInput
                                     id="description"
-                                    v-model="contact.description"
+                                    v-model="form.description"
                                     type="text"
                                     class="mt-1 block w-full"
                                     placeholder="Escribir Nota"
@@ -215,14 +222,15 @@
                                     autocomplete="text"
                                     maxlength="100"
                                 />
-                                <InputError class="mt-2" />
+                                <InputError class="mt-2" :message="form.errors.description" />
                             </div>
                         </div>
                         <div class="flex justify-end m-8">
-                                <SecundaryButton class="ml-4 mt-4" @click="store">
+                                <SecundaryButton type="submit" class="ml-4 mt-4">
                                     Crear
                                 </SecundaryButton>
                         </div>
+                    </form>
                 </div>
             </div>
         </div>

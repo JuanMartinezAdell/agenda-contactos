@@ -65,22 +65,39 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         //
-        $data = $request->validate([
+        $request->validate([
             'name' => ['required', 'max:50'],
             'organization_id' => ['required', 'max:50'],
             'position_id' => ['required', 'max:50'],
             'service_id' => ['required', 'max:50'],
             'location_id' => ['required', 'max:50'],
-            'phone' => ['required', 'max:50'],
-            'short_phone' => ['required', 'max:50'],
+            'phone' => ['required', 'unique:contacts', 'max:50'],
+            'short_phone' => ['required', 'unique:contacts', 'max:50'],
             'phone_code' => ['required', 'max:50'],
-            'email' => ['required', 'max:50', 'email'],
-            'description' => 'required',
+            'email' => ['required', 'unique:contacts', 'max:50', 'email'],
+            'description' => ['required'],
         ]);
 
-        $contact = Contact::create($data);
+        $contact = new Contact;
+        $contact->name = $request->name;
+        $contact->organization_id = $request->organization_id;
+        $contact->position_id = $request->position_id;
+        $contact->service_id = $request->service_id;
+        $contact->location_id = $request->location_id;
+        $contact->phone = $request->phone;
+        $contact->short_phone = $request->short_phone;
+        $contact->phone_code = $request->phone;
+        $contact->email = $request->email;
+        $contact->description = $request->description;
+        $contact->save();
+        sleep(1);
 
-        return redirect()->route('contact.edit', $contact);
+        return redirect()->route('contacts.index');
+
+        /*Contact::create($request->all());
+        sleep(1);
+
+        return redirect()->route('contacts.index')->with('message', 'Contacto Creado Correctamente');*/
     }
 
     /**
@@ -92,6 +109,19 @@ class ContactController extends Controller
     public function show(Contact $contact)
     {
         //
+        $contacts = \App\Models\Contact::all();
+        $organizations = \App\Models\Organization::all();
+        $positions = \App\Models\Position::all();
+        $services = \App\Models\Service::all();
+        $locations = \App\Models\Location::all();
+
+        return Inertia::render(
+            'Contacts/EditContacts',
+            //compact('organizations', 'positions', 'services', 'locations'),
+            [
+                'contact' => $contact
+            ]
+        );
     }
 
     /**
@@ -103,7 +133,27 @@ class ContactController extends Controller
     public function edit(Contact $contact)
     {
         //
-        return Inertia::render('Contacts/EditContacts', compact('contact'));
+        /* $contacts = \App\Models\Contact::all();
+        $organizations = \App\Models\Organization::all();
+        $positions = \App\Models\Position::all();
+        $services = \App\Models\Service::all();
+        $locations = \App\Models\Location::all();
+
+        return Inertia::render(
+            'Contacts/CreateContacts',
+            compact('organizations', 'positions', 'services', 'locations'),
+            [
+                'contact' => $contact
+            ]
+        );*/
+        //$filters = $request->all('search');
+
+        //return $filters;
+
+
+        // return $contacts;
+
+        // return Inertia::render('Contacts/EditContacts', compact('contacts', 'filters'));
     }
 
     /**
@@ -113,9 +163,37 @@ class ContactController extends Controller
      * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateContactRequest $request, Contact $contact)
+    public function update(Request $request, Contact $contact)
     {
         //
+        $request->validate([
+            'name' => ['required', 'max:50'],
+            'organization_id' => ['required', 'max:50'],
+            'position_id' => ['required', 'max:50'],
+            'service_id' => ['required', 'max:50'],
+            'location_id' => ['required', 'max:50'],
+            'phone' => ['required', 'max:50'],
+            'short_phone' => ['required', 'max:50'],
+            'phone_code' => ['required', 'max:50'],
+            'email' => ['required', 'max:50', 'email'],
+            'description' => ['required'],
+        ]);
+
+        $contact = Contact::find($request->id);
+        $contact->name = $request->name;
+        $contact->organization_id = $request->organization_id;
+        $contact->position_id = $request->position_id;
+        $contact->service_id = $request->service_id;
+        $contact->location_id = $request->location_id;
+        $contact->phone = $request->phone;
+        $contact->short_phone = $request->short_phone;
+        $contact->phone_code = $request->phone;
+        $contact->email = $request->email;
+        $contact->description = $request->description;
+        $contact->save();
+        sleep(1);
+
+        return redirect()->route('contacts.index');
     }
 
     /**
@@ -127,5 +205,7 @@ class ContactController extends Controller
     public function destroy(Contact $contact)
     {
         //
+        $contact->delete();
+        return redirect()->route('contacts.index');
     }
 }
