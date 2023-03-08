@@ -25,7 +25,7 @@
                             <span class="sr-only">Dribbbel account</span>
                         </a>
                     </div>
-                </footer>
+    </footer>
 </template>
 
 <script>

@@ -27,6 +27,10 @@
 <script setup>
     defineProps({
         contacts: Array,
+        organizations: Array,
+        positions: Array,
+        services: Array,
+        locations: Array,
     });
 
     const form = useForm ({
@@ -90,80 +94,43 @@
                                 <InputError class="mt-2" :message="form.errors.email" />
                             </div>
                             <div class="mt-4 mx-8">
-                                <!-- Dropdown width="60">
-                                    <template #trigger -->
-
-                                            <label class="form-label">Empresa</label>
-                                            <select v-model="form.organization_id" class="form.control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required>
-                                                <option value="" disabled selected>Selecciona una Empresa</option>
-                                                <!-- option v-for="organization in organizations" :key="organization.id" :value="organization.id">{{ organization.name }}</!-->
-                                                <option value="1">SAS</option>
-                                                <option value="2">Externa</option>
-                                            </select>
-                                            <InputError class="mt-2" :message="form.errors.organization_id" />
-
-                                    <!-- /template>
-                                </!-->
+                                <Label>Empresa
+                                    <select v-model="form.organization_id" class="form.control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required>
+                                        <option value="" disabled selected>Selecciona una Empresa</option>
+                                        <option v-for="organization in organizations" :value="organization.id" :key="organization.id">{{ organization.name }}</option>
+                                    </select>
+                                    <InputError class="mt-2" :message="form.errors.organization_id" />
+                                </Label>
                             </div>
                             <div class="mt-4 mx-8">
-                                <Dropdown width="60">
-                                    <template #trigger>
-                                        <Label>
-                                            Puesto
-                                            <select v-model="form.position_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                                <option value="" disabled selected>Selecciona el pusto de trabajo</option>
-                                                <!--option v-for="position in positions" :value="position.id" :key="position.id">{{ position.name }}</!--option -->
-                                                <option value="1">Direccion</option>
-                                                <option value="2">Administracion</option>
-                                                <option value="3">Informatica</option>
-                                                <option value="4">Usuario</option>
-                                            </select>
-                                            <InputError class="mt-2" :message="form.errors.position_id" />
-
-                                        </Label>
-                                    </template>
-                                </Dropdown>
+                                <Label>
+                                    Puesto
+                                    <select v-model="form.position_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <option value="" disabled selected>Selecciona el pusto de trabajo</option>
+                                        <option v-for="position in positions" :value="position.id" :key="position.id">{{ position.name }}</option>
+                                    </select>
+                                    <InputError class="mt-2" :message="form.errors.position_id" />
+                                </Label>
                             </div>
                             <div class="mt-4 mx-8">
-                                <Dropdown width="60">
-                                    <template #trigger>
-                                        <Label>
-                                            Servicio
-                                            <select v-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                                <option value="" disabled selected>Selecciona el servico</option>
-                                                <!--option v-for="service in services" :value="service.id" :key="service.id">{{ service.name }}</!--option-->
-                                                <option value="1">Administracion</option>
-                                                <option value="2">Direccion</option>
-                                                <option value="3">Radiologia</option>
-                                                <option value="4">Trauma</option>
-                                                <option value="5">Urgencias</option>
-                                            </select>
-                                            <InputError class="mt-2" :message="form.errors.service_id" />
-                                        </Label>
-                                    </template>
-                                </Dropdown>
+                                <Label>
+                                    Servicio
+                                    <select v-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <option value="" disabled selected>Selecciona el servico</option>
+                                        <option v-for="service in services" :value="service.id" :key="service.id">{{ service.name }}</option>
+                                    </select>
+                                     <InputError class="mt-2" :message="form.errors.service_id" />
+                                </Label>
                             </div>
                             <div class="mt-4 mx-8">
-                                <Dropdown width="60">
-                                    <template #trigger>
-                                        <Label>
-                                            Localizacion
-                                            <select v-model="form.location_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                                <option value="" disabled selected>Selecciona una Localizacion</option>
-                                                <!--option v-for="location in locations" :value="location.id" :key="location.id">{{ location.name }}</!--option-->
-                                                <option value="1">Hopital</option>
-                                                <option value="2">Cuevas de Almanzora</option>
-                                                <option value="3">Vera</option>
-                                                <option value="4">Mojacar</option>
-                                                <option value="5">Garrucha</option>
-                                                <option value="6">Maria</option>
-                                                <option value="7">Seron</option>
-                                                <option value="8">Albox</option>
-                                            </select>
-                                            <InputError class="mt-2" :message="form.errors.location_id" />
-                                        </Label>
-                                    </template>
-                                </Dropdown>
+                                <Label>
+                                    Localizacion
+                                    <select v-model="form.location_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                        <option value="" disabled selected>Selecciona una Localizacion</option>
+                                        <option v-for="location in locations" :value="location.id" :key="location.id">{{ location.name }}</option>
+                                    </select>
+                                    <InputError class="mt-2" :message="form.errors.location_id" />
+                                </Label>
                             </div>
                             <div class="mt-4 mx-8">
                                 <InputLabel for="phone" value="Telefono" />
