@@ -1,12 +1,4 @@
 <script>
-    import AppLayout from '@/Layouts/AppLayout.vue';
-    import DropdownVue from '../../ComponentsNew/DropdownVue.vue';
-    import Pagination from '../../ComponentsNew/PaginationVue.vue';
-    import Input from '@/ComponentsNew/TextInput.vue';
-    import {Link} from '@inertiajs/inertia-vue3';
-    import PrimaryButton from '@/Components/PrimaryButton.vue';
-    import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
-    import EditButton from '@/ComponentsNew/EditButton.vue';
     export default {
         data() {
             return {
@@ -22,10 +14,20 @@
 </script>
 
 <script setup>
+    import AppLayout from '@/Layouts/AppLayout.vue';
+    import DropdownVue from '../../ComponentsNew/DropdownVue.vue';
+    import Pagination from '../../ComponentsNew/PaginationVue.vue';
+    import Input from '@/ComponentsNew/TextInput.vue';
+    import {Link} from '@inertiajs/inertia-vue3';
+    import PrimaryButton from '@/Components/PrimaryButton.vue';
+    import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
+    import EditButton from '@/ComponentsNew/EditButton.vue';
+
     defineProps({
         filters: Object,
         contacts: Array,
      })
+
 </script>
 
 <template>

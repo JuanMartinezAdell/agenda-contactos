@@ -1,4 +1,4 @@
-<script>
+<script setup>
     import AppLayout from '@/Layouts/AppLayout.vue';
     import InputError from '@/Components/InputError.vue';
     import InputLabel from '@/Components/InputLabel.vue';
@@ -11,20 +11,6 @@
     import { reactive } from '@vue/reactivity';
     import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
 
-    export default {
-        data() {
-            return {
-                organization_id: '',
-                position_id: '',
-                service_id: '',
-                location_id: '',
-            };
-        },
-    }
-</script>
-
-
-<script setup>
     defineProps({
         contacts: Array,
         organizations: Array,
@@ -46,7 +32,7 @@
             description: '',
         });
 
-        function submit () {
+        const submit = () => {
             form.post('/contacts', form);
         }
 </script>

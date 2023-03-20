@@ -14,6 +14,10 @@
 
     const props = defineProps({
         contact: Object,
+        organizations: Array,
+        positions: Array,
+        services: Array,
+        locations: Array,
     });
 
     const form = useForm ({
@@ -30,7 +34,7 @@
             id: props.contact.id,
         });
 
-        function submit(){
+        const submit = () =>{
             form.post('/contacts/update', form);
         }
 </script>
