@@ -129,32 +129,7 @@ class ContactController extends Controller
      *
      * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
-     */
-    public function edit(Contact $contact)
-    {
-        //
-        /* $contacts = \App\Models\Contact::all();
-        $organizations = \App\Models\Organization::all();
-        $positions = \App\Models\Position::all();
-        $services = \App\Models\Service::all();
-        $locations = \App\Models\Location::all();
-
-        return Inertia::render(
-            'Contacts/CreateContacts',
-            compact('organizations', 'positions', 'services', 'locations'),
-            [
-                'contact' => $contact
-            ]
-        );*/
-        //$filters = $request->all('search');
-
-        //return $filters;
-
-
-        // return $contacts;
-
-        // return Inertia::render('Contacts/EditContacts', compact('contacts', 'filters'));
-    }
+     **/
 
     /**
      * Update the specified resource in storage.
