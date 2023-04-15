@@ -37,7 +37,7 @@ Route::get('/contacts/create', [ContactController::class, 'create'])->name('cont
 Route::post('/contacts', [ContactController::class, 'store'])->name('contacts.store');
 //Route::get('/contacts/{contact}/edit', [ContactController::class, 'edit'])->name('contacts.edit');
 Route::get('/contacts/{contact}/edit', [ContactController::class, 'show'])->name('contacts.show');
-Route::post('/contacts/update', [ContactController::class, 'update'])->name('contacts.update');
+Route::post('/contacts', [ContactController::class, 'update'])->name('contacts.update');
 Route::get('/contacts/{contact}/delete', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
 /*Route::middleware([

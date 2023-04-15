@@ -18,10 +18,11 @@
     import DropdownVue from '../../ComponentsNew/DropdownVue.vue';
     import Pagination from '../../ComponentsNew/PaginationVue.vue';
     import Input from '@/ComponentsNew/TextInput.vue';
-    import {Link} from '@inertiajs/inertia-vue3';
+    import { Link } from '@inertiajs/inertia-vue3';
     import PrimaryButton from '@/Components/PrimaryButton.vue';
     import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
     import EditButton from '@/ComponentsNew/EditButton.vue';
+    import { ref, watch } from 'vue';
 
     defineProps({
         filters: Object,

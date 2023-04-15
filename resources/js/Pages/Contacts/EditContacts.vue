@@ -1,42 +1,44 @@
 <script setup>
-    import AppLayout from '@/Layouts/AppLayout.vue';
-    import InputError from '@/Components/InputError.vue';
-    import InputLabel from '@/Components/InputLabel.vue';
-    import PrimaryButton from '@/Components/PrimaryButton.vue';
-    import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
-    import TextInput from '@/Components/TextInput.vue';
-    import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-    import Dropdown from '@/Components/Dropdown.vue';
-    import DropdownLink from '@/Components/DropdownLink.vue';
-    import { Inertia } from '@inertiajs/inertia';
-    import { reactive } from '@vue/reactivity';
-    import DeleteButton from '@/ComponentsNew/DeleteButton.vue';
+  import AppLayout from '@/Layouts/AppLayout.vue';
+  import InputError from '@/Components/InputError.vue';
+  import InputLabel from '@/Components/InputLabel.vue';
+  import PrimaryButton from '@/Components/PrimaryButton.vue';
+  import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
+  import TextInput from '@/Components/TextInput.vue';
+  import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+  import Dropdown from '@/Components/Dropdown.vue';
+  import DropdownLink from '@/Components/DropdownLink.vue';
+  import { Inertia } from '@inertiajs/inertia';
+  import { reactive } from '@vue/reactivity';
+  import DeleteButton from '@/ComponentsNew/DeleteButton.vue';
+
 
     const props = defineProps({
-        contact: Object,
-        organizations: Array,
-        positions: Array,
-        services: Array,
-        locations: Array,
+            contact: Object,
+            organizations: Object,
+            positions: Object,
+            services: Object,
+            locations: Object,
     });
 
-    const form = useForm ({
-            name: props.contact.name,
-            organization_id: props.contact.organization_id,
-            position_id: props.contact.position_id,
-            service_id: props.contact.service_id,
-            location_id: props.contact.location_id,
-            phone: props.contact.phone,
-            short_phone: props.contact.short_phone,
-            phone_code: props.contact.phone_code,
-            email: props.contact.email,
-            description: props.contact.description,
-            id: props.contact.id,
-        });
 
-        const submit = () =>{
-            form.post('/contacts/update', form);
-        }
+    const form = useForm ({
+        id: props.contact.id,
+        name: props.contact.name,
+        organization_id: props.contact.organization_id,
+        position_id: props.contact.position_id,
+        service_id: props.contact.service_id,
+        location_id: props.contact.location_id,
+        phone: props.contact.phone,
+        short_phone: props.contact.short_phone,
+        phone_code: props.contact.phone_code,
+        email: props.contact.email,
+        description: props.contact.description,
+    });
+
+    const submit = () =>{
+        form.post('/contacts/update', form);
+    }
 </script>
 
 <template>
