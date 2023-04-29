@@ -8,7 +8,6 @@
   import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
   import Dropdown from '@/Components/Dropdown.vue';
   import DropdownLink from '@/Components/DropdownLink.vue';
-  import { Inertia } from '@inertiajs/inertia';
   import { reactive } from '@vue/reactivity';
   import DeleteButton from '@/ComponentsNew/DeleteButton.vue';
 
@@ -37,7 +36,7 @@
     });
 
     const submit = () =>{
-        form.post('/contacts/update', form);
+        form.put('/contacts/update', form.id);
     }
 </script>
 
@@ -87,9 +86,8 @@
                                 <Label>
                                     Empresa
                                     <select v-model="form.organization_id" class="form.control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"  required>
-                                        <option value="" disabled selected>Selecciona una Empresa</option>
-                                        <option value="1">SAS</option>
-                                        <option value="2">Externo</option>
+                                        <option value="" disabled selected>Selecciona Empresa</option>
+                                        <option v-for="organization in organizations" :value="organization.id" :key="organization.id">{{ organization.name }}</option>
                                     </select>
                                     <InputError class="mt-2" :message="form.errors.organization_id" />
                                 </Label>
@@ -98,11 +96,8 @@
                                 <Label>
                                     Puesto
                                     <select v-model="form.position_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        <option value="" disabled selected>Selecciona el pusto de trabajo</option>
-                                        <option value="1">Direccion</option>
-                                        <option value="2">Administracion</option>
-                                        <option value="3">Informatica</option>
-                                        <option value="4">Usuario</option>
+                                        <option value="" disabled selected>Selecciona puesto</option>
+                                        <option v-for="position in positions" :value="position.id" :key="position.id">{{ position.name }}</option>
                                     </select>
                                     <InputError class="mt-2" :message="form.errors.position_id" />
                                 </Label>
@@ -111,12 +106,8 @@
                                 <Label>
                                     Servicio
                                     <select v-model="form.service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        <option value="" disabled selected>Selecciona el servico</option>
-                                        <option value="1">Direccion</option>
-                                        <option value="2">Administracion</option>
-                                        <option value="3">Informatica</option>
-                                        <option value="4">Pediatria</option>
-                                        <option value="5">Medicina interna</option>
+                                        <option value="" disabled selected>Selecciona servicio al que pertenece</option>
+                                        <option v-for="service in services" :value="service.id" :key="service.id">{{ service.name }}</option>
                                     </select>
                                     <InputError class="mt-2" :message="form.errors.service_id" />
                                 </Label>
@@ -125,12 +116,8 @@
                                 <Label>
                                     Localizacion
                                     <select v-model="form.location_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
-                                        <option value="" disabled selected>Selecciona una Localizacion</option>
-                                        <option value="1">Hopital</option>
-                                        <option value="2">Cuevas de Almanzora</option>
-                                        <option value="3">Vera</option>
-                                        <option value="4">Mojacar</option>
-                                        <option value="5">Garrucha</option>
+                                        <option value="" disabled selected>Selecciona Localizacion</option>
+                                        <option v-for="location in locations" :value="location.id" :key="location.id">{{ location.name }}</option>
                                     </select>
                                     <InputError class="mt-2" :message="form.errors.location_id" />
                                 </Label>
@@ -199,14 +186,22 @@
                                 />
                                 <InputError class="mt-2" :message="form.errors.description" />
                             </div>
-                        </div>
-                        <div class="flex justify-end m-8">
-                                <SecundaryButton type="submit" class="ml-4 mt-4">
-                                    Actualizar
-                                </SecundaryButton>
-                                <Link :href="'/contacts/'+contact.id+'/delete'">
-                                        <DeleteButton class="ml-4 mt-4 text-center">Borrar Contacto</DeleteButton>
+                            <div class="flex m-8 mt-4">
+                                <Link :href="'/contacts'">
+                                    <button type="button" class=" text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
+                                        <svg class="w-6 h-6 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                                        <span class="sr-only">Icon description</span>
+                                    </button>
                                 </Link>
+                            </div>
+                            <div class="flex m-8 mt-4 justify-end">
+                                    <PrimaryButton type="submit" class="ml-4 mt-4 ">
+                                        Actualizar
+                                    </PrimaryButton>
+                                    <Link :href="'/contacts/'+contact.id+'/delete'">
+                                            <DeleteButton class="ml-4 mt-4 text-center">Borrar Contacto</DeleteButton>
+                                    </Link>
+                            </div>
                         </div>
                     </form>
                 </div>

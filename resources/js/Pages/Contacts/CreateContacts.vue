@@ -9,14 +9,14 @@
     import DropdownLink from '@/Components/DropdownLink.vue';
     import { Inertia } from '@inertiajs/inertia';
     import { reactive } from '@vue/reactivity';
-    import SecundaryButton from '@/ComponentsNew/SecundaryButton.vue';
+
 
     defineProps({
-        contacts: Array,
-        organizations: Array,
-        positions: Array,
-        services: Array,
-        locations: Array,
+        contacts: Object,
+        organizations: Object,
+        positions: Object,
+        services: Object,
+        locations: Object,
     });
 
     const form = useForm ({
@@ -182,11 +182,19 @@
                                 />
                                 <InputError class="mt-2" :message="form.errors.description" />
                             </div>
+                            <div class="flex m-8 mt-4">
+                                <Link :href="'/contacts'">
+                                    <button type="button" class=" text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800">
+                                        <svg class="w-6 h-6 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                                        <span class="sr-only">Icon description</span>
+                                    </button>
+                                </Link>
+                            </div>
+                            <div class="flex m-8 justify-end">
+                            <PrimaryButton type="submit">
+                                Crear
+                            </PrimaryButton>
                         </div>
-                        <div class="flex justify-end m-8">
-                                <SecundaryButton type="submit" class="ml-4 mt-4">
-                                    Crear
-                                </SecundaryButton>
                         </div>
                     </form>
                 </div>
