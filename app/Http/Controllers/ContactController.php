@@ -36,7 +36,7 @@ class ContactController extends Controller
 
         // return $contacts;
 
-        return Inertia::render('Contacts/IndexContacts', compact('contacts', 'filters'));
+        return inertia('Contacts/IndexContacts', compact('contacts', 'filters'));
     }
 
     /**
@@ -53,7 +53,7 @@ class ContactController extends Controller
         $services = \App\Models\Service::all();
         $locations = \App\Models\Location::all();
 
-        return Inertia::render('Contacts/CreateContacts', compact('organizations', 'positions', 'services', 'locations'));
+        return inertia('Contacts/CreateContacts', compact('organizations', 'positions', 'services', 'locations'));
     }
 
     /**
@@ -93,11 +93,6 @@ class ContactController extends Controller
         sleep(1);
 
         return redirect()->route('contacts.index');
-
-        /*Contact::create($request->all());
-        sleep(1);
-
-        return redirect()->route('contacts.index')->with('message', 'Contacto Creado Correctamente');*/
     }
 
     /**
@@ -106,22 +101,15 @@ class ContactController extends Controller
      * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function show(Contact $contact)
+    public function edit(Contact $contact)
     {
         //
-        $contacts = \App\Models\Contact::all();
         $organizations = \App\Models\Organization::all();
         $positions = \App\Models\Position::all();
         $services = \App\Models\Service::all();
         $locations = \App\Models\Location::all();
 
-        return Inertia::render(
-            'Contacts/EditContacts',
-            //compact('organizations', 'positions', 'services', 'locations'),
-            [
-                'contact' => $contact
-            ]
-        );
+        return inertia('Contacts/EditContacts', compact('contact', 'organizations', 'positions', 'services', 'locations'));
     }
 
     /**
@@ -129,32 +117,7 @@ class ContactController extends Controller
      *
      * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
-     */
-    public function edit(Contact $contact)
-    {
-        //
-        /* $contacts = \App\Models\Contact::all();
-        $organizations = \App\Models\Organization::all();
-        $positions = \App\Models\Position::all();
-        $services = \App\Models\Service::all();
-        $locations = \App\Models\Location::all();
-
-        return Inertia::render(
-            'Contacts/CreateContacts',
-            compact('organizations', 'positions', 'services', 'locations'),
-            [
-                'contact' => $contact
-            ]
-        );*/
-        //$filters = $request->all('search');
-
-        //return $filters;
-
-
-        // return $contacts;
-
-        // return Inertia::render('Contacts/EditContacts', compact('contacts', 'filters'));
-    }
+     **/
 
     /**
      * Update the specified resource in storage.

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Contact extends Model
 {
-    use HasFactory;
 
     protected $fillable = [
 
@@ -22,6 +21,7 @@ class Contact extends Model
         'email',
         'description',
     ];
+    use HasFactory;
 
     public function organization()
     {
