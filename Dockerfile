@@ -1,29 +1,58 @@
-FROM php:8.0.11-fpm-alpine
+# Dockerfile
 
-RUN apk --no-cache upgrade && \
-    apk --no-cache add bash git sudo openssh  libxml2-dev oniguruma-dev autoconf gcc g++ make npm freetype-dev libjpeg-turbo-dev libpng-dev libzip-dev
+# Usa la imagen oficial de PHP 8.0
+FROM php:8.0-fpm
 
-# PHP: Install php extensions
-RUN pecl channel-update pecl.php.net && \
-    pecl install pcov ssh2 swoole && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install mbstring xml iconv pcntl gd zip sockets pdo pdo_mysql bcmath soap && \
-    docker-php-ext-enable mbstring xml gd iconv zip pcov pcntl sockets bcmath pdo pdo_mysql soap swoole
+# Instala dependencias de sistema necesarias
+RUN apt-get update && \
+    apt-get install -y \
+    libicu-dev \
+    libonig-dev \
+    libzip-dev \
+    unzip \
+    zip \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev
 
-RUN curl -sS https://getcomposer.org/installer​ | php -- \
-    --install-dir=/usr/local/bin --filename=composer && \
-    ln -s /usr/local/bin/composer /usr/bin/composer
+# Instala extensiones de PHP necesarias
+RUN docker-php-ext-install \
+    pdo_mysql \
+    bcmath \
+    intl \
+    mbstring \
+    zip \
+    exif \
+    pcntl \
+    gd
 
-COPY --from=spiralscout/roadrunner:2.4.2 /usr/bin/rr /usr/bin/rr
+# Configura la extensión gd
+RUN docker-php-ext-configure \
+    gd --with-freetype --with-jpeg
 
-WORKDIR /app
-COPY . .
+# Instala Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN composer install --no-dev --prefer-dist --no-scripts && \
-    composer require laravel/octane spiral/roadrunner inertiajs/inertia-laravel --no-dev --prefer-dist --no-scripts && \
-    cp .env.example .env && \
-    php artisan key:generate && \
-    php artisan octane:install --server="swoole"
+# Establece el directorio de trabajo en /var/www
+WORKDIR /var/www
 
-CMD php artisan octane:start --server="swoole" --host="0.0.0.0"
-EXPOSE 8000
+# Copia el archivo composer.json y el archivo composer.lock al contenedor
+COPY composer.json composer.lock /var/www/
+
+# Ejecuta composer install para instalar las dependencias de Laravel
+RUN composer install --prefer-dist --no-dev --no-scripts --no-progress --no-suggest
+
+# Copia todo el contenido de la aplicación al contenedor
+COPY . /var/www
+
+# Crea el archivo .env
+RUN cp .env.example .env
+
+# Genera la clave de la aplicación
+RUN php artisan key:generate
+
+# Expone el puerto 9000 para que Nginx pueda acceder al servidor PHP-FPM
+EXPOSE 9000
+
+# Ejecuta el servidor PHP-FPM
+CMD ["php-fpm"]
