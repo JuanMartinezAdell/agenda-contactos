@@ -1,58 +1,60 @@
-# Dockerfile
+FROM php:8.0-fpm-alpine
 
-# Usa la imagen oficial de PHP 8.0
-FROM php:8.0-fpm
+WORKDIR /var/www/html
 
-# Instala dependencias de sistema necesarias
-RUN apt-get update && \
-    apt-get install -y \
-    libicu-dev \
-    libonig-dev \
+# Instalar dependencias necesarias
+RUN apk add --no-cache \
+    git \
+    curl \
+    libpng \
+    libjpeg \
+    libwebp \
+    libzip \
+    libpq \
+    libxml2 \
+    libxslt \
+    freetype \
+    icu \
     libzip-dev \
-    unzip \
-    zip \
     libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev
+    libjpeg-turbo-dev \
+    libwebp-dev \
+    freetype-dev \
+    icu-dev \
+    postgresql-dev \
+    oniguruma-dev \
+    openssl-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install bcmath \
+    && docker-php-ext-install pdo \
+    && docker-php-ext-install pdo_pgsql \
+    && docker-php-ext-install opcache \
+    && docker-php-ext-install pcntl \
+    && docker-php-ext-install xml \
+    && docker-php-ext-install xsl \
+    && docker-php-ext-install zip \
+    && docker-php-ext-install intl \
+    && docker-php-ext-install sockets \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu \
+    && pecl install redis \
+    && docker-php-ext-enable redis \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
 
-# Instala extensiones de PHP necesarias
-RUN docker-php-ext-install \
-    pdo_mysql \
-    bcmath \
-    intl \
-    mbstring \
-    zip \
-    exif \
-    pcntl \
-    gd
+# Instalar Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Configura la extensión gd
-RUN docker-php-ext-configure \
-    gd --with-freetype --with-jpeg
+# Copiar archivos del proyecto
+COPY . .
 
-# Instala Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Instalar dependencias de Composer
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-progress --no-scripts
 
-# Establece el directorio de trabajo en /var/www
-WORKDIR /var/www
+# Configurar Octane
+RUN php artisan octane:install
 
-# Copia el archivo composer.json y el archivo composer.lock al contenedor
-COPY composer.json composer.lock /var/www/
-
-# Ejecuta composer install para instalar las dependencias de Laravel
-RUN composer install --prefer-dist --no-dev --no-scripts --no-progress --no-suggest
-
-# Copia todo el contenido de la aplicación al contenedor
-COPY . /var/www
-
-# Crea el archivo .env
-RUN cp .env.example .env
-
-# Genera la clave de la aplicación
-RUN php artisan key:generate
-
-# Expone el puerto 9000 para que Nginx pueda acceder al servidor PHP-FPM
-EXPOSE 9000
-
-# Ejecuta el servidor PHP-FPM
-CMD ["php-fpm"]
+# Exponer el puerto 8000 e inicio el servidor
+CMD php artisan octane:start --server="swoole" --host="0.0.0.0"
+EXPOSE 8000
