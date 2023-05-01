@@ -1,60 +1,38 @@
-FROM php:8.0-fpm-alpine
+# Imagen base de PHP
+FROM php:8.0-fpm
 
-WORKDIR /var/www/html
+# Copiar el archivo de configuración de PHP
+COPY ./docker/php/php.ini /usr/local/etc/php/
 
-# Instalar dependencias necesarias
-RUN apk add --no-cache \
-    git \
-    curl \
-    libpng \
-    libjpeg \
-    libwebp \
-    libzip \
-    libpq \
-    libxml2 \
-    libxslt \
-    freetype \
-    icu \
-    libzip-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    libwebp-dev \
-    freetype-dev \
-    icu-dev \
-    postgresql-dev \
-    oniguruma-dev \
-    openssl-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install bcmath \
-    && docker-php-ext-install pdo \
-    && docker-php-ext-install pdo_pgsql \
-    && docker-php-ext-install opcache \
-    && docker-php-ext-install pcntl \
-    && docker-php-ext-install xml \
-    && docker-php-ext-install xsl \
-    && docker-php-ext-install zip \
-    && docker-php-ext-install intl \
-    && docker-php-ext-install sockets \
-    && pecl install apcu \
-    && docker-php-ext-enable apcu \
-    && pecl install redis \
-    && docker-php-ext-enable redis \
-    && rm -rf /var/cache/apk/* \
-    && rm -rf /tmp/*
+# Instalar extensiones de PHP necesarias
+RUN docker-php-ext-install pdo_mysql
 
 # Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Copiar archivos del proyecto
+# Instalar Node.js y NPM
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
+
+# Instalar Nginx
+RUN apt-get update && apt-get install -y nginx
+
+# Copiar la configuración de Nginx
+COPY ./docker/nginx/default.conf /etc/nginx/sites-available/default
+
+# Crear directorio para la aplicación
+WORKDIR /var/www/html
+
+# Copiar archivos de la aplicación al contenedor
 COPY . .
 
-# Instalar dependencias de Composer
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-progress --no-scripts
+# Instalar dependencias de Composer y de NPM
+RUN composer install --no-dev --optimize-autoloader
+RUN npm install && npm run production
 
-# Configurar Octane
-RUN php artisan octane:install
+# Exponer puerto de Nginx
+EXPOSE 80
 
-# Exponer el puerto 8000 e inicio el servidor
-CMD php artisan octane:start --server="swoole" --host="0.0.0.0"
-EXPOSE 8000
+# Ejecutar Nginx y PHP-FPM
+CMD service nginx start && php-fpm
+
