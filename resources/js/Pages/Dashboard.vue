@@ -15,7 +15,7 @@
         <div class="py-12">
             <div class="p-8 max-w-7xl mx-auto sm:px-6 lg:px-8 bg-none">
                 <!-- img class=" " src="../../image/AgendaGif.gif"  alt=""/ -->
-                <div class="rounded-xl flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat bg-gradient-to-r from-indigo-400 via-purple-400 to-orange-300" style="background-image:url('https://images.unsplash.com/photo-1499123785106-343e69e68db1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1748&q=80')">
+                <div class="rounded-xl flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat bg-gradient-to-r from-indigo-400 via-purple-400 to-orange-300" style="background-image:url('https://raw.githubusercontent.com/JuanMartinezAdell/agenda-contactos/main/CortaAtalaya.jpg')">
                     <div class="max-w-6xl p-8 mx-auto sm:px-6 lg:px-8">
                             <div class="rounded-xl bg-gray-800 bg-opacity-50 px-16 py-10 shadow-lg backdrop-blur-md max-sm:px-8">
                                 <div class="text-white">
